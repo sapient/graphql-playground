@@ -1,0 +1,27 @@
+<%= form_with(model: car_model) do |form| %>
+  <% if car_model.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(car_model.errors.count, "error") %> prohibited this car_model from being saved:</h2>
+
+      <ul>
+        <% car_model.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :manufacturer_id, style: "display: block" %>
+    <%= form.number_field :manufacturer_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

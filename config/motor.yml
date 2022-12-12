@@ -1,0 +1,46 @@
+---
+engine_version: 0.4.2
+file_version: 2022-12-12 18:23:08.009565000 +02:00
+resources:
+- name: color
+  preferences:
+    columns:
+    - name: full_name
+      display_name: Full name
+      column_type: string
+      access_type: read_write
+      virtual: true
+      format: {}
+      validators: []
+    display_column: full_name
+  updated_at: 2022-12-12 18:23:08.009565000 +00:00
+- name: stock
+  preferences:
+    columns:
+    - column_type: currency
+      format:
+        currency: ZAR
+        currency_base: unit
+      name: cost
+    - format:
+        currency: ZAR
+        currency_base: units
+      name: price
+  updated_at: 2022-12-12 18:14:56.749822000 +00:00
+configs:
+- key: header.links
+  value:
+  - name: "⭐ Star on GitHub"
+    path: https://github.com/motor-admin/motor-admin-rails
+  updated_at: 2022-12-12 17:57:13.487359000 +00:00
+queries: []
+dashboards: []
+forms: []
+alerts: []
+api_configs:
+- id: 1
+  name: origin
+  url: "/"
+  preferences: {}
+  description:
+  updated_at: 2022-12-12 17:57:13.492373000 +00:00
