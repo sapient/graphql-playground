@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_12_175711) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_12_191700) do
   create_table "car_models", force: :cascade do |t|
     t.string "name"
     t.integer "manufacturer_id"
@@ -226,7 +226,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_12_175711) do
   create_table "stocks", force: :cascade do |t|
     t.integer "car_model_id"
     t.integer "color_id"
-    t.integer "milage"
+    t.integer "mileage"
     t.integer "cost"
     t.integer "price"
     t.datetime "created_at", null: false

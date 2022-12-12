@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.2
-file_version: 2022-12-12 18:23:08.009565000 +02:00
+file_version: 2022-12-12 18:39:02.500613000 +02:00
 resources:
 - name: color
   preferences:
@@ -12,8 +12,15 @@ resources:
       virtual: true
       format: {}
       validators: []
+    - name: to_global_id
+      display_name: to global id
+      column_type: string
+      access_type: read_write
+      virtual: true
+      format: {}
+      validators: []
     display_column: full_name
-  updated_at: 2022-12-12 18:23:08.009565000 +00:00
+  updated_at: 2022-12-12 18:39:02.500613000 +00:00
 - name: stock
   preferences:
     columns:

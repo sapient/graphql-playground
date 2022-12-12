@@ -68,6 +68,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    amazing_print (1.4.0)
     ar_lazy_preload (1.1.2)
       rails (>= 5.2)
     audited (5.0.2)
@@ -232,6 +233,7 @@ PLATFORMS
   x86_64-darwin-22
 
 DEPENDENCIES
+  amazing_print
   bootsnap
   capybara
   cssbundling-rails
