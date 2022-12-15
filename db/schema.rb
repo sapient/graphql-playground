@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_13_135953) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_15_141428) do
   create_table "car_models", force: :cascade do |t|
     t.string "name"
     t.integer "manufacturer_id"
@@ -32,6 +32,42 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_135953) do
     t.integer "purchases"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "kom_budget", id: false, force: :cascade do |t|
+    t.string "chart", limit: 2, null: false
+    t.string "account_class", limit: 4, null: false
+    t.string "class_name", limit: 32, null: false
+    t.string "sub_class", limit: 2, null: false
+    t.string "sub_class_description", limit: 32, null: false
+    t.string "account", limit: 4, null: false
+    t.string "account_description", limit: 32, null: false
+    t.string "company", limit: 2, null: false
+    t.string "company_description", limit: 32, null: false
+    t.string "main_activity", limit: 2, null: false
+    t.string "main_activity_description", limit: 32, null: false
+    t.string "farm", limit: 4, null: false
+    t.string "farm_description", limit: 16, null: false
+    t.string "division", limit: 2, null: false
+    t.string "division_description", limit: 32, null: false
+    t.string "crop", limit: 2, null: false
+    t.string "crop_description", limit: 8, null: false
+    t.string "sub_account_1", limit: 8, null: false
+    t.string "sub_account_1_description", limit: 32, null: false
+    t.string "sub_account_2", limit: 8, null: false
+    t.string "sub_account_2_description", limit: 32, null: false
+    t.integer "gl_account", null: false
+    t.string "account_name", limit: 128, null: false
+    t.integer "financial_year", null: false
+    t.integer "fiscal_period", null: false
+    t.string "budget_version", limit: 4, null: false
+    t.string "last_updated_date_time", limit: 32, null: false
+    t.integer "row_id", null: false
+    t.string "year_start", limit: 32, null: false
+    t.string "year_end", limit: 32, null: false
+    t.string "period_start", limit: 32, null: false
+    t.string "period_end", limit: 32, null: false
+    t.string "period_1", limit: 16, null: false
   end
 
   create_table "manufacturers", force: :cascade do |t|
@@ -230,6 +266,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_13_135953) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "motor_tags_name_unique_index", unique: true
+  end
+
+  create_table "pivot_config_rows", force: :cascade do |t|
+    t.string "pivot_config_id"
+    t.string "config_type"
+    t.string "setting"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pivot_configs", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "query"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "stocks", force: :cascade do |t|

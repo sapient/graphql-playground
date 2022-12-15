@@ -4,30 +4,46 @@ module Types
     include GraphQL::Types::Relay::HasNodeField
     include GraphQL::Types::Relay::HasNodesField
 
+
+
     field :colors, [ColorType], null: true, description: 'Colors'
     def colors
       Color.all
     end
 
-    queries = [
-       {
-         query_name: :xquery,
-         returns: String,
-         null: true,
-         arguments: [[:start_date, String, false], [:end_date, String, false], [:company_id, Int, false]],
-         fields: []
-       }
-    ]
 
-    field :pivot, PivotType, null: true
 
-    queries.each do |x|
-      field x[:query_name], x[:returns], null: x[:null] do
-        description "Fetches #{x[:fields].join(', ')} from #{x[:query_name]}"
-        x[:arguments].each do |arg|
-          argument arg[0], arg[1], required: arg[3]
-        end
-      end
+    field :pivot_configs, [PivotConfigType], null: true, description: 'Would return a list of Pivot queries for a customer'
+    def pivot_configs
+      PivotConfig.all
+    end
+
+
+
+    ## Pivot for a specific config
+    # This should load the pivot config and run its SQL, applying any configs found to the query and output
+    field :untyped_pivot_for_config, String, null: true do
+      description 'Returns data defined by a config'
+      argument :id, Integer, required: true
+      argument :pivot_args, [PivotQueryType], required: false
+    end
+
+    def untyped_pivot_for_config(id:, pivot_args:)
+      DataFromPivotConfig.call(id: id).to_json
+    end
+
+
+
+    field :typed_pivot_for_config, [PivotDataType], null: true do
+      description 'Returns data defined by a config'
+      argument :id, Integer, required: true
+      argument :pivot_args, [PivotQueryType], required: false
+    end
+
+    def typed_pivot_for_config(id:, pivot_args:)
+      typed_data = DataFromPivotConfig.call(id: id)
+      Rails.logger.ap typed_data
+      typed_data
     end
 
 
@@ -43,13 +59,6 @@ module Types
     end
 
     def rows(*args)
-      Rails.logger.debug args.ai
-      # order_sql = sorting.map { |s| "#{s.col_id} #{s.sort}"}.join(', ')
-      #
-      # flat_data = FlatDataService.call(column_list:).get_hash_table
-      #
-      # PivotService.new(flat_data).pivot(args).to_json # Returns a pivoted table
-
       flat_data = [
         { company: 'Komati', profit: '100', fy: 2022 },
         { company: 'Komati', profit: '110', fy: 2023 },

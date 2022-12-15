@@ -1,6 +1,6 @@
 ---
 engine_version: 0.4.2
-file_version: 2022-12-12 18:39:02.500613000 +02:00
+file_version: 2022-12-15 16:33:48.919287000 +02:00
 resources:
 - name: color
   preferences:
@@ -21,6 +21,14 @@ resources:
       validators: []
     display_column: full_name
   updated_at: 2022-12-12 18:39:02.500613000 +00:00
+- name: pivot_config_row
+  preferences:
+    columns:
+    - description: For a SQL Mapping, setting should be original_name:new_name. For
+        DB Column, the setting should take the form of a comma separated list of columns
+        present in the table
+      name: setting
+  updated_at: 2022-12-15 16:33:48.919287000 +00:00
 - name: stock
   preferences:
     columns:
