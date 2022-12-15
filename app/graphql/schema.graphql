@@ -1,0 +1,86 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type CarModel {
+    createdAt: ISO8601DateTime!
+    id: ID!
+    manufacturer: Manufacturer
+    name: String
+    updatedAt: ISO8601DateTime!
+}
+
+type Color {
+    createdAt: ISO8601DateTime!
+    fullName: String
+    id: ID!
+    metallic: Boolean
+    name: String
+    updatedAt: ISO8601DateTime!
+}
+
+type Customer {
+    createdAt: String!
+    email: String!
+    id: Int!
+    name: String!
+    password: String!
+    purchases: Int!
+    updatedAt: String!
+}
+
+type Manufacturer {
+    createdAt: ISO8601DateTime!
+    id: ID!
+    name: String
+    updatedAt: ISO8601DateTime!
+}
+
+type Mutation {
+    "An example field added by the generator"
+    testField: String!
+}
+
+type Pivot {
+    customer: Customer
+    stock: Stock
+}
+
+type Query {
+    "Colors"
+    colors: [Color!]
+    pivot: Pivot
+    "Returns a pivotable list of cars"
+    rows(endRow: Int, groupKeys: [String!], rowGroups: [RowGroup!], sorting: [Sort!], startRow: Int): String
+    "Fetches  from xquery"
+    xquery(companyId: Int, endDate: String, startDate: String): String
+}
+
+type Stock {
+    carModel: CarModel
+    carModelId: Int!
+    color: Color
+    colorId: Int!
+    cost: Int!
+    createdAt: String!
+    id: Int!
+    mileage: Int!
+    price: Int!
+    updatedAt: String!
+}
+
+"An ISO 8601-encoded datetime"
+scalar ISO8601DateTime
+
+input RowGroup {
+    aggFunc: String
+    colId: String
+}
+
+input Sort {
+    colId: String
+    sort: String
+}
