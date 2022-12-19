@@ -1,20 +1,32 @@
 class DataFromPivotConfig
-  attr_accessor :pivot
+  attr_accessor :pivot, :pivot_args
 
-  def initialize(id:)
+  def initialize(id:, pivot_args: nil)
     @pivot = PivotConfig.find(id)
+    @pivot_args = pivot_args
+
+    Rails.logger.ap pivot_args
   end
 
-  def self.call(id:)
-    new(id: id).send(:run_query)
+  def self.call(id:, pivot_args: nil)
+    new(id: id, pivot_args: pivot_args).send(:run_query)
   end
 
   private
+
+  # Use Arel to build the query
+  def run_arel_query(table, columns, groups, filters)
+    table = Arel::Table.new(table)
+    query = table.project(*columns).where(*filters).group(*groups)
+    results = ActiveRecord::Base.connection.exec_query(query.to_sql)
+    results.to_a
+  end
 
   def run_query
     sql = apply_db_columns(pivot.query)
     sql = apply_mappings(sql)
     sql = apply_groups(sql)
+    sql = apply_sorting(sql)
 
     results = ActiveRecord::Base.connection.exec_query(sql)
     results.to_a
@@ -50,6 +62,18 @@ class DataFromPivotConfig
       select_clause.gsub!(original, "#{original} AS #{replacement}")
     end
     [select_clause, from_clause].join(' FROM ')
+  end
+
+  def apply_sorting(sql)
+    if pivot_args&.dig(:sorting).present?
+      sql += " ORDER BY "
+      clauses = []
+      pivot_args[:sorting].each do |sort|
+        clauses << " #{sort[:col_id]} #{sort[:sort]}"
+      end
+      sql += clauses.join(", ")
+    end
+    sql
   end
 
   # Apply groupings to the query if there are any

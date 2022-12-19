@@ -18,6 +18,13 @@ module Types
       PivotConfig.all
     end
 
+    field :pivot_config, PivotConfigType, null: false do
+      argument :id, Integer, required: true
+    end
+    def pivot_config(id: nil)
+      PivotConfig.find(id)
+    end
+
 
 
     ## Pivot for a specific config
@@ -25,9 +32,8 @@ module Types
     field :untyped_pivot_for_config, String, null: true do
       description 'Returns data defined by a config'
       argument :id, Integer, required: true
-      argument :pivot_args, [PivotQueryType], required: false
+      argument :pivot_args, PivotQueryType, required: false
     end
-
     def untyped_pivot_for_config(id:, pivot_args:)
       DataFromPivotConfig.call(id: id).to_json
     end
@@ -37,12 +43,11 @@ module Types
     field :typed_pivot_for_config, [PivotDataType], null: true do
       description 'Returns data defined by a config'
       argument :id, Integer, required: true
-      argument :pivot_args, [PivotQueryType], required: false
+      argument :pivot_args, PivotQueryType, required: false
     end
-
     def typed_pivot_for_config(id:, pivot_args:)
-      typed_data = DataFromPivotConfig.call(id: id)
-      Rails.logger.ap typed_data
+      Rails.logger.ap pivot_args
+      typed_data = DataFromPivotConfig.call(id: id, pivot_args: pivot_args)
       typed_data
     end
 
@@ -57,7 +62,6 @@ module Types
       argument :group_keys, [String], required: false
       argument :sorting, [SortType], required: false
     end
-
     def rows(*args)
       flat_data = [
         { company: 'Komati', profit: '100', fy: 2022 },
