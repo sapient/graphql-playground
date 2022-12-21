@@ -10,14 +10,28 @@ class DataFromPivotConfig
 
   def self.call(id:, pivot_args: nil)
     new(id: id, pivot_args: pivot_args).send(:run_query)
+    # new(id: id, pivot_args: pivot_args).send(:run_arel_query)
   end
 
   private
 
   # Use Arel to build the query
-  def run_arel_query(table, columns, groups, filters)
+  def run_arel_query(table: nil, columns: nil, groups: nil, filters: nil)
+    table = 'stocks'
+    columns = %w[id cost price]
+    filters = [
+      { column: 'cost', operator: 'gt', value: 100000 },
+      { column: 'id', operator: 'eq', value: 1 }
+    ]
+
     table = Arel::Table.new(table)
-    query = table.project(*columns).where(*filters).group(*groups)
+
+    # conditions = filters.map { |filter| table[filter[:column]].send(filter[:operator].to_s, filter[:value]) }.reduce(&:or)
+    # arel_filters = filters.map do |filter|
+    #   table[filter[:column]].send(filter[:operator].to_s, filter[:value])
+    # end
+    query = table.project(*columns).group(*groups)
+
     results = ActiveRecord::Base.connection.exec_query(query.to_sql)
     results.to_a
   end
